@@ -3,28 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Our Site</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Welcome Page</title>
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Custom styles for the body to apply the Inter font */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            margin: 0;
+            padding: 20px; /* Add some padding for smaller screens */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        /* Style for the custom message box */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .message-box.show {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
-<body class="bg-gradient-to-r from-blue-500 to-indigo-600 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white p-8 md:p-12 rounded-xl shadow-2xl max-w-lg w-full text-center transform transition-transform duration-300 hover:scale-105">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-6">
-            Welcome!
-        </h1>
-        <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
-            Discover valuable insights and resources. Register now to gain access to exclusive content, including our latest PDF.
-        </p>
-        <a href="./registration.html" class="inline-block bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-300 focus:ring-opacity-75">
-            Register Now
-        </a>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+
+    <!-- Main container for all sections -->
+    <div class="relative w-full max-w-md bg-white p-8 rounded-xl shadow-lg transition-all duration-500 ease-in-out main-container">
+
+        <!-- Landing Page Section -->
+        <div id="landingPage" class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">Welcome!</h1>
+            <p class="text-lg text-gray-600 mb-8">
+                Click the button below to get started and register.
+            </p>
+            <button id="downloadButton"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-md
+                           transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                Download
+            </button>
+        </div>
+
+        <!-- Registration Page Section (Initially hidden) -->
+        <div id="registrationPage" class="hidden absolute top-0 left-0 w-full h-full p-8 bg-white rounded-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Register Here</h2>
+            <form class="space-y-4" id="registrationForm">
+                <div>
+                    <label for="name" class="block text-gray-700 text-sm font-semibold mb-2">Full Name</label>
+                    <input type="text" id="name" name="name"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="John Doe">
+                </div>
+                <div>
+                    <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                    <input type="email" id="email" name="email"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="john.doe@example.com">
+                </div>
+                <div>
+                    <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                    <input type="password" id="password" name="password"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="********">
+                </div>
+                <button type="submit" id="signUpButton"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-full shadow-md
+                               transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75">
+                    Sign Up
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <button id="backButton"
+                        class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-300 focus:outline-none">
+                    Go Back to Welcome
+                </button>
+            </div>
+        </div>
+
+        <!-- Thank You Page Section (Initially hidden) -->
+        <div id="thankYouPage" class="hidden absolute top-0 left-0 w-full h-full p-8 bg-white rounded-xl text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Thank You for Registering!</h2>
+            <p class="text-lg text-gray-600 mb-8">
+                Your registration was successful. You can now download the PDF.
+            </p>
+            <button id="viewPdfButton"
+                    class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-full shadow-md
+                           transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75">
+                View PDF
+            </button>
+            <div class="mt-6 text-center">
+                <button id="backToWelcomeFromThankYou"
+                        class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-300 focus:outline-none">
+                    Go Back to Welcome
+                </button>
+            </div>
+        </div>
     </div>
+
+    <!-- Custom Message Box -->
+    <div id="messageBox" class="message-box"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const downloadButton = document.getElementById('downloadButton');
+            const backButton = document.getElementById('backButton');
+            const signUpButton = document.getElementById('signUpButton');
+            const viewPdfButton = document.getElementById('viewPdfButton');
+            const backToWelcomeFromThankYou = document.getElementById('backToWelcomeFromThankYou');
+
+            const landingPage = document.getElementById('landingPage');
+            const registrationPage = document.getElementById('registrationPage');
+            const thankYouPage = document.getElementById('thankYouPage');
+            const mainContainer = document.querySelector('.main-container');
+            const messageBox = document.getElementById('messageBox');
+
+            // Function to display a temporary message
+            const showMessage = (message, duration = 2000) => {
+                messageBox.textContent = message;
+                messageBox.classList.add('show');
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, duration);
+            };
+
+            // Function to show registration page
+            const showRegistration = () => {
+                landingPage.classList.add('hidden');
+                thankYouPage.classList.add('hidden'); // Hide thank you if visible
+                registrationPage.classList.remove('hidden');
+                adjustContainerHeight();
+            };
+
+            // Function to show landing page (resets to initial state)
+            const showLanding = () => {
+                registrationPage.classList.add('hidden');
+                thankYouPage.classList.add('hidden');
+                landingPage.classList.remove('hidden');
+                adjustContainerHeight();
+            };
+
+            // Function to show thank you page
+            const showThankYou = () => {
+                registrationPage.classList.add('hidden');
+                landingPage.classList.add('hidden');
+                thankYouPage.classList.remove('hidden');
+                adjustContainerHeight();
+            };
+
+            // Event listener for the "Download" button
+            if (downloadButton) {
+                downloadButton.addEventListener('click', showRegistration);
+            }
+
+            // Event listener for the "Go Back" button on registration page
+            if (backButton) {
+                backButton.addEventListener('click', showLanding);
+            }
+
+            // Event listener for the "Sign Up" button
+            if (signUpButton) {
+                signUpButton.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent default form submission
+
+                    // Simulate registration success (add actual form validation/submission here)
+                    showMessage("Registration successful! Redirecting to Thank You page...", 2000);
+
+                    // Show the thank you page after a short delay
+                    setTimeout(() => {
+                        showThankYou();
+                    }, 1500);
+                });
+            }
+
+            // Event listener for the "View PDF" button on the thank you page
+            if (viewPdfButton) {
+                viewPdfButton.addEventListener('click', () => {
+                    window.open('https://cdn.chools.in/DIG_LIB/E-Book/eBook_Data_Analytics.pdf', '_blank');
+                });
+            }
+
+            // Event listener for the "Go Back to Welcome" button on thank you page
+            if (backToWelcomeFromThankYou) {
+                backToWelcomeFromThankYou.addEventListener('click', showLanding);
+            }
+
+            // Initial adjustment of container height based on the currently visible content
+            const adjustContainerHeight = () => {
+                if (!mainContainer) {
+                    console.error("Main container element not found for height adjustment.");
+                    return;
+                }
+                let currentVisiblePage;
+                if (!landingPage.classList.contains('hidden')) {
+                    currentVisiblePage = landingPage;
+                } else if (!registrationPage.classList.contains('hidden')) {
+                    currentVisiblePage = registrationPage;
+                } else if (!thankYouPage.classList.contains('hidden')) {
+                    currentVisiblePage = thankYouPage;
+                }
+
+                if (currentVisiblePage) {
+                    // Set min-height based on the currently visible content's scrollHeight
+                    // Add extra padding to ensure content fits without scrollbars
+                    mainContainer.style.minHeight = (currentVisiblePage.scrollHeight + 40) + 'px';
+                }
+            };
+
+            // Adjust height initially and on window resize
+            window.addEventListener('resize', adjustContainerHeight);
+            adjustContainerHeight(); // Call once on load to set initial height
+        });
+    </script>
 </body>
 </html>
